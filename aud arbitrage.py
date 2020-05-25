@@ -24,8 +24,27 @@ def get_bpi_data():
     bpi_data.append(bpi_aud[3])
     bpi_data.append(float(bpi_aud[6]))
     bpi_data.append(float(bpi_aud[7]))
-    
     return bpi_data
+
+def get_sb_data():
+    #parse from Security Bank website
+    sb_website = requests.get("https://www.securitybank.com/personal/investments/market-information/foreign-exchange-rate-forex/")
+    sb_website_html = bs4.BeautifulSoup(sb_website.text, 'html.parser')
+    sb_rates_table = sb_website_html.find_all('div', {'class': 'et_pb_text_inner'})
+    sb_time = sb_rates_table[2].getText() #timestamp
+    sb_table_rows = sb_rates_table[1].select('tr')
+    sb_aud = sb_table_rows[6].getText() #fx rate
+    #clean timestamp
+    sb_time = sb_time[14:36]
+    #clean rates data
+    sb_aud = str(sb_aud.replace('\n', ',')).split(',')
+    #return value
+    sb_data = list()
+    sb_data.append(sb_time)
+    sb_data.append(sb_aud[1])
+    sb_data.append(sb_aud[3])
+    sb_data.append(sb_aud[5])
+    return sb_data
 
 if __name__ == '__main__':
     #Title
@@ -44,7 +63,7 @@ if __name__ == '__main__':
     
     #get fx rates
     rates_from_bpi = get_bpi_data()
-    
+    rates_from_sb = get_sb_data()
     
     #Read file_path as pandas DataFrame
 
