@@ -1,4 +1,4 @@
-import os, requests, bs4, pyinputplus as pyip #, pandas as pd
+import os, requests, bs4, pyinputplus as pyip, pandas as pd, datetime
 from pathlib import Path
 
 def get_bpi_data():
@@ -64,11 +64,19 @@ if __name__ == '__main__':
     #get fx rates
     rates_from_bpi = get_bpi_data()
     rates_from_sb = get_sb_data()
-    
-    #Read file_path as pandas DataFrame
+    #output
+    output_data = list()
+    output_data.append(str(datetime.datetime.now()))
+    output_data.append(rates_from_bpi[0])
+    output_data.append(rates_from_bpi[2])
+    output_data.append(rates_from_bpi[3])
+    output_data.append(rates_from_sb[0])
+    output_data.append(rates_from_sb[2])
+    output_data.append(rates_from_sb[3])
 
-    #rates_file = pd.read_csv(file_path)
-    #rates_file.loc[-1] = []
-    #print (rates_file)
-    #save_file = rates_file.to_csv(file_path, index = False)
+    #Read file_path as pandas DataFrame
+    rates_file = pd.read_csv(file_path)
+    rates_file.loc[-1] = output_data
+    print (rates_file)
+    save_file = rates_file.to_csv(file_path, index = False)
     
