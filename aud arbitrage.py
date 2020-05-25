@@ -7,15 +7,20 @@ def get_bpi_data():
     bpi_website_html = bs4.BeautifulSoup(bpi_website.text, 'html.parser')
     bpi_rates_table = bpi_website_html.find(id='b301-infographic-content')
     bpi_table_rows = bpi_rates_table.select('tr')
-    bpi_aud = bpi_table_rows[5]
-    
-    #clean data
+    bpi_aud = bpi_table_rows[5] #fx rate
+    bpi_time = bpi_rates_table.find('p')   
+    #clean timestamp
+    bpi_time = str(bpi_time.getText()).replace('\xa0', ' ')
+    bpi_time = bpi_time.replace('As of', '')
+    bpi_time = bpi_time.replace('  ', '')   
+    #clean rates data
     bpi_aud = str(bpi_aud.getText()) #convert to text
     bpi_aud = bpi_aud.replace("\n", ",") #replace \n with comma
     bpi_aud = bpi_aud.replace("\xa0", "") #remove \xa0
     bpi_aud = bpi_aud.split(",")
     #return value
     bpi_data = list()
+    bpi_data.append(bpi_time)
     bpi_data.append(bpi_aud[3])
     bpi_data.append(float(bpi_aud[6]))
     bpi_data.append(float(bpi_aud[7]))
