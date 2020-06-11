@@ -17,4 +17,4 @@ for i in range(0, len(bp)):
 rates_file['SB DATE'] = sb
 rates_file['BPI DATE'] = bp
 
-save_file = rates_file.to_csv(file_path)
+save_file = rates_file.to_csv(file_path, index = False)
