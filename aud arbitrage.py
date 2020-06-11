@@ -5,6 +5,7 @@ import pyinputplus as pyip
 import pandas as pd
 import datetime
 from pathlib import Path
+import dateutil.parser as dparser
 
 def get_bpi_data():
     #parse from BPI forex website
@@ -15,9 +16,8 @@ def get_bpi_data():
     bpi_aud = bpi_table_rows[5] #fx rate
     bpi_time = bpi_rates_table.find('p')   
     #clean timestamp
-    bpi_time = str(bpi_time.getText()).replace('\xa0', ' ')
-    bpi_time = bpi_time.replace('As of', '')
-    bpi_time = bpi_time.replace('  ', '')   
+    bpi_time = dparser.parse(str(bpi_time.getText()).replace('\xa0', ' '),
+                             fuzzy = True, ignoretz = True) 
     #clean rates data
     bpi_aud = str(bpi_aud.getText()) #convert to text
     bpi_aud = bpi_aud.replace("\n", ",") #replace \n with comma
@@ -36,11 +36,11 @@ def get_sb_data():
     sb_website = requests.get("https://www.securitybank.com/personal/investments/market-information/foreign-exchange-rate-forex/")
     sb_website_html = bs4.BeautifulSoup(sb_website.text, 'html.parser')
     sb_rates_table = sb_website_html.find_all('div', {'class': 'et_pb_text_inner'})
-    sb_time = sb_rates_table[2].getText() #timestamp
+    sb_time = dparser.parse(sb_rates_table[2].getText(),
+                            fuzzy = True, ignoretz = True)
     sb_table_rows = sb_rates_table[1].select('tr')
     sb_aud = sb_table_rows[6].getText() #fx rate
-    #clean timestamp
-    sb_time = sb_time[14:36]
+
     #clean rates data
     sb_aud = str(sb_aud.replace('\n', ',')).split(',')
     #return value
