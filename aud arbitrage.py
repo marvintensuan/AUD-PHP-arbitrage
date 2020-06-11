@@ -1,4 +1,9 @@
-import os, requests, bs4, pyinputplus as pyip, pandas as pd, datetime
+import os
+import requests
+import bs4
+import pyinputplus as pyip
+import pandas as pd
+import datetime
 from pathlib import Path
 
 def get_bpi_data():
@@ -48,7 +53,7 @@ def get_sb_data():
 
 if __name__ == '__main__':
     #Title
-    print ("AUD/PHP Arbitrage for Security Bank and BPI.")
+    print("AUD/PHP Arbitrage for Security Bank and BPI.")
     
     #Default file
     file_path = Path('D:/Projects/AUD forex/rates_table.csv')
@@ -77,6 +82,6 @@ if __name__ == '__main__':
     #Read file_path as pandas DataFrame
     rates_file = pd.read_csv(file_path)
     rates_file.loc[-1] = output_data
-    print (rates_file)
+    print(rates_file)
     save_file = rates_file.to_csv(file_path, index = False)
     
