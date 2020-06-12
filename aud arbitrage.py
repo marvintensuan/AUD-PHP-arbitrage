@@ -9,7 +9,9 @@ import dateutil.parser as dparser
 
 def get_bpi_data():
     #parse from BPI forex website
-    bpi_website = requests.get("https://www.bpiexpressonline.com/p/2/2091/indicative-exchange-rates")
+    bpi_website = requests.get(
+                               "https://www.bpiexpressonline.com/"
+                               "p/2/2091/indicative-exchange-rates")
     bpi_website_html = bs4.BeautifulSoup(bpi_website.text, 'html.parser')
     bpi_rates_table = bpi_website_html.find(id='b301-infographic-content')
     bpi_table_rows = bpi_rates_table.select('tr')
@@ -33,7 +35,10 @@ def get_bpi_data():
 
 def get_sb_data():
     #parse from Security Bank website
-    sb_website = requests.get("https://www.securitybank.com/personal/investments/market-information/foreign-exchange-rate-forex/")
+    sb_website = requests.get(
+                              "https://www.securitybank.com/"
+                              "personal/investments/market-information/"
+                              "foreign-exchange-rate-forex/")
     sb_website_html = bs4.BeautifulSoup(sb_website.text, 'html.parser')
     sb_rates_table = sb_website_html.find_all('div', {'class': 'et_pb_text_inner'})
     sb_time = dparser.parse(sb_rates_table[2].getText(),
