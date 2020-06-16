@@ -1,7 +1,6 @@
 import os
 import requests
 import bs4
-import pyinputplus as pyip
 import pandas as pd
 import datetime
 from pathlib import Path
@@ -62,15 +61,7 @@ if __name__ == '__main__':
     
     #Default file
     file_path = Path('D:/Projects/AUD forex/rates_table.csv')
-    
-    #Change to custom file
-    print(" ".join(["Current file path is", str(file_path)]))
-    i = pyip.inputYesNo(prompt='Do you want to change file?\n')
-    if i in ['y', 'yes']:
-        print(file_path)
-        file_path = Path(input('Enter new file path.\n'))
-        print(" ".join(["New file path will be", str(file_path)]))
-    
+
     #get fx rates
     rates_from_bpi = get_bpi_data()
     rates_from_sb = get_sb_data()
