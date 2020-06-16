@@ -55,28 +55,52 @@ def get_sb_data():
     sb_data.append(sb_aud[5])
     return sb_data
 
+def output_list(previous_data, current_data):
+    if current_data[0] == previous_data:
+        current_data = ['','','','']
+    return current_data
+
 if __name__ == '__main__':
     #Title
     print("AUD/PHP Arbitrage for Security Bank and BPI.")
     
     #Default file
     file_path = Path('D:/Projects/AUD forex/rates_table.csv')
+    
+    #Read file_path as pandas DataFrame
+    rates_file = pd.read_csv(file_path)
 
     #get fx rates
     rates_from_bpi = get_bpi_data()
     rates_from_sb = get_sb_data()
+    
+    #check previous data
+    bpi_previous = rates_from_bpi[0]
+    rates_from_bpi = output_list(bpi_previous, rates_from_bpi)
+    sb_prevous = rates_from_sb[0]
+    rates_from_sb = output_list(sb_prevous, rates_from_sb)
+    
     #output
     output_data = list()
     output_data.append(str(datetime.datetime.now()))
-    output_data.append(rates_from_bpi[0])
-    output_data.append(rates_from_bpi[2])
-    output_data.append(rates_from_bpi[3])
-    output_data.append(rates_from_sb[0])
-    output_data.append(rates_from_sb[2])
-    output_data.append(rates_from_sb[3])
+    for i in range(0, len(rates_from_bpi)):
+        if i == 1:
+            if rates_from_bpi[i] == '':
+                print('BPI website not updated.')
+            else:
+                print(' '.join([rates_from_bpi[i], ' data from BPI Website has been to the table.']))
+        else:
+            output_data.append(rates_from_bpi[i])
+    for i in range(0, len(rates_from_sb)):
+        if i == 1:
+            if rates_from_sb[i] == '':
+                print('Security Bank website not updated.')
+            else:
+                print(' '.join([rates_from_sb[i], ' data from Security Bank website has been to the table.']))
+        else:
+            output_data.append(rates_from_sb[i])            
 
-    #Read file_path as pandas DataFrame
-    rates_file = pd.read_csv(file_path)
+
     rates_file.loc[-1] = output_data
     print(rates_file)
     save_file = rates_file.to_csv(file_path, index = False)
