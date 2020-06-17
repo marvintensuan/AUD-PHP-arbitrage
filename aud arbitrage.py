@@ -75,9 +75,9 @@ if __name__ == '__main__':
     rates_from_sb = get_sb_data()
     
     #check previous data
-    bpi_previous = rates_from_bpi[0]
+    bpi_previous = rates_file['BPI DATE'].iloc[-1]
     rates_from_bpi = output_list(bpi_previous, rates_from_bpi)
-    sb_prevous = rates_from_sb[0]
+    sb_prevous = rates_file['SB DATE'].iloc[-1]
     rates_from_sb = output_list(sb_prevous, rates_from_sb)
     
     #output
