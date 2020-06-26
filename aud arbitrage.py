@@ -56,7 +56,7 @@ def get_sb_data():
     return sb_data
 
 def output_list(previous_data, current_data):
-    if current_data[0] == previous_data:
+    if str(current_data[0]) == previous_data:
         current_data = ['','','','']
     return current_data
 
@@ -102,6 +102,6 @@ if __name__ == '__main__':
 
 
     rates_file.loc[-1] = output_data
-    print(rates_file)
+    print(rates_file.tail())
     save_file = rates_file.to_csv(file_path, index = False)
     
